@@ -15,7 +15,7 @@ export default function Header() {
                 <NavLink
                     to="/"
                     className="flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-lg transition-all hover:scale-110 active:scale-95">
-                    <img src="/Logo.jpg" alt="Главная" className="h-7 w-7 object-contain" />
+                    <img src="public\image.png" alt="Главная" className="h-7 w-7 object-contain" />
                 </NavLink>
 
                 <nav className="flex items-center gap-8 text-gray-900 text-base font-medium">
