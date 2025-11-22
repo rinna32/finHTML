@@ -1,42 +1,87 @@
-// src/components/StoreMap.jsx
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
-// Исправление иконок
+// УБИРАЕМ ВСЁ, что Leaflet добавляет сам
 delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-});
 
-const StoreMap = ({ stores }) => {
-  const defaultCenter = stores.length
-    ? [stores[0].lat, stores[0].lng]
-    : [55.751244, 37.618423];
+// Создаём SVG-иконку — это единственный способ получить 100% ровный круг
+const createGoldMarker = (isHovered = false) => {
+  const size = isHovered ? 32 : 20;
+  const pulse = isHovered ? `
+    <circle cx="16" cy="16" r="18" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.6">
+      <animate attributeName="r" from="14" to="28" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" from="0.8" to="0" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  ` : '';
+
+  const svg = `
+    <svg width="${size}" height="${size}" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <!-- Тень -->
+      <circle cx="16" cy="16" r="10" fill="#000" opacity="0.2" filter="blur(4px)"/>
+      
+      <!-- Основной круг -->
+      <circle cx="16" cy="16" r="10" fill="${isHovered ? '#f59e0b' : '#d4af37'}"/>
+      <circle cx="16" cy="16" r="10" fill="none" stroke="white" stroke-width="3"/>
+      
+      <!-- Блик -->
+      <circle cx="12" cy="12" r="4" fill="white" opacity="0.4"/>
+      
+      <!-- Пульсация при ховере -->
+      ${pulse}
+    </svg>
+  `;
+
+  return L.divIcon({
+    html: svg,
+    className: 'custom-gold-marker',  // важно!
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2], // точный центр
+    popupAnchor: [0, -size / 2],
+  });
+};
+
+const StoreMap = ({ stores, hoveredId }) => {
+  const center = stores.length ? [stores[0].lat, stores[0].lng] : [55.751244, 37.618423];
 
   return (
     <MapContainer
-      center={defaultCenter}
-      zoom={13}
-      style={{ height: '100%', width: '100%' }}
+      center={center}
+      zoom={13.2}
+      zoomControl={false}
       scrollWheelZoom={false}
-      className="z-0"
+      dragging={false}
+      style={{ height: '100%', width: '100%', background: '#f8f8f8' }}
     >
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+        attribution='&copy; OpenStreetMap &copy; CartoDB'
       />
-      {stores.map((store, index) => (
-        <Marker key={index} position={[store.lat, store.lng]}>
-          <Popup className="text-sm font-medium text-gray-900">
-            <strong>{store.name}</strong>
-            <br />
-            <span className="text-gray-600">{store.address}</span>
-          </Popup>
-        </Marker>
+
+      {stores.map((store) => (
+        <Marker
+          key={store.id}
+          position={[store.lat, store.lng]}
+          icon={createGoldMarker(hoveredId === store.id)}
+        />
       ))}
+
+      {/* Абсолютно чистый стиль — убираем ВСЁ лишнее */}
+      <style jsx global>{`
+        .custom-gold-marker {
+          background: transparent !important;
+          border: none !important;
+          padding: 0 !important;
+          margin: 0 !important;
+        }
+        .custom-gold-marker img {
+          width: 100% !important;
+          height: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+      `}</style>
     </MapContainer>
   );
 };
