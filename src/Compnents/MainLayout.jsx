@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import Header from "./Header";
+import Footer from "./Footer";
 
 export default function MainLayout() {
   
@@ -14,6 +15,9 @@ export default function MainLayout() {
             <main>
                 <Outlet />
             </main>
+            <footer>
+                <Footer/>
+            </footer>
         </div>
     )
 }
