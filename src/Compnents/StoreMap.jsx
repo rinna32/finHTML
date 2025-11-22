@@ -3,10 +3,10 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// УБИРАЕМ ВСЁ, что Leaflet добавляет сам
+
 delete L.Icon.Default.prototype._getIconUrl;
 
-// Создаём SVG-иконку — это единственный способ получить 100% ровный круг
+
 const createGoldMarker = (isHovered = false) => {
   const size = isHovered ? 32 : 20;
   const pulse = isHovered ? `
@@ -35,9 +35,9 @@ const createGoldMarker = (isHovered = false) => {
 
   return L.divIcon({
     html: svg,
-    className: 'custom-gold-marker',  // важно!
+    className: 'custom-gold-marker',  
     iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2], // точный центр
+    iconAnchor: [size / 2, size / 2], 
     popupAnchor: [0, -size / 2],
   });
 };
@@ -67,7 +67,7 @@ const StoreMap = ({ stores, hoveredId }) => {
         />
       ))}
 
-      {/* Абсолютно чистый стиль — убираем ВСЁ лишнее */}
+      
       <style jsx global>{`
         .custom-gold-marker {
           background: transparent !important;

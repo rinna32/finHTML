@@ -14,7 +14,7 @@ const Footer = () => {
     <footer className="w-full bg-black text-white">
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         
-        {/* Левая колонка — список магазинов */}
+        
         <div className="space-y-10">
           <div>
             <h2 className="font-light text-4xl md:text-5xl tracking-widest mb-3">Наши бутики</h2>
@@ -51,7 +51,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Правая колонка — карта */}
+        
         <div className="relative h-80 md:h-96 rounded-lg overflow-hidden shadow-2xl">
           <StoreMap stores={stores} hoveredId={hoveredId} />
           <div className="absolute inset-0 bg-black/20 pointer-events-none" />
