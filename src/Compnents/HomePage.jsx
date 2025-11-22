@@ -120,7 +120,7 @@ export default function HomePage() {
                 </motion.div>
             </section>
 
-            <div className="max-w-screen-xl mx-auto px-6 md:px-12 lg:px-20 mt-0 mb-24">
+            <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 mt-0 mb-24">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
 
                     {["bags", "jewelry", "clothes"].map((item, i) => (
