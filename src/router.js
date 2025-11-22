@@ -9,7 +9,8 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 Component: HomePage
-            }
+            },
+            
         ]
     }
 ])
