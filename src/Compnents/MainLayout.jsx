@@ -3,6 +3,7 @@ import { useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import Header from "./Header";
 import Footer from "./Footer";
+import AuthModal from "./AuthModal";
 
 export default function MainLayout() {
   
@@ -11,6 +12,7 @@ export default function MainLayout() {
         <div className="min-h-screen">
             <header>
                 <Header/>
+                <AuthModal />
             </header>
             <main>
                 <Outlet />
