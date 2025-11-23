@@ -11,8 +11,7 @@ export default function MainLayout() {
     return (
         <div className="min-h-screen">
             <header>
-                <Header/>
-                <AuthModal />
+                <Header/> 
             </header>
             <main>
                 <Outlet />
