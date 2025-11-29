@@ -1,4 +1,4 @@
-/* src/components/StoreMap.css */
+
 .custom-gold-marker {
   background: transparent !important;
   border: none !important;
@@ -7,7 +7,7 @@
 }
 
 .custom-gold-marker img {
-  display: none !important; /* важно — скрываем стандартную картинку leaflet */
+  display: none !important; 
 }
 
 .custom-gold-marker > div {
