@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { register } from "../services/api";
 
 export default function Register() {
@@ -12,7 +12,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -29,14 +29,18 @@ export default function Register() {
     try {
       const res = await register(formData);
 
-      if (!res.success) {
-        setError(res.error || "Ошибка регистрации");
-      } else {
+
+      if (res.success) {
+        localStorage.setItem('token', res.token); 
+        window.dispatchEvent(new Event('authChange')); 
+        navigate('/');
+      }
+      else {
         setSuccess("Регистрация успешна! Перенаправляем…");
 
-       
+
         setTimeout(() => {
-          navigate("/"); 
+          navigate("/");
         }, 1500);
       }
     } catch (err) {
