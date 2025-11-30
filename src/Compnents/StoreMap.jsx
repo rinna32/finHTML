@@ -1,88 +1,87 @@
 import React from 'react';
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
-import './StoreMap.css';
-import L from 'leaflet';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 
-
+// Убираем стандартные иконки Leaflet (предотвращаем 404 на иконки)
 delete L.Icon.Default.prototype._getIconUrl;
 
+// Создаём кастомную SVG-иконку — работает везде, без внешних зависимостей
+const createGoldMarkerIcon = (isHighlighted = false) => {
+  const size = isHighlighted ? 40 : 24;
+  const r = size / 2;
 
-const createGoldMarker = (isHovered = false) => {
-  const size = isHovered ? 32 : 20;
-  const pulse = isHovered ? `
-    <circle cx="16" cy="16" r="18" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.6">
-      <animate attributeName="r" from="14" to="28" dur="2s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" from="0.8" to="0" dur="2s" repeatCount="indefinite"/>
-    </circle>
-  ` : '';
-
+  // SVG-код как строка (без внешних ссылок)
   const svg = `
-    <svg width="${size}" height="${size}" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
       <!-- Тень -->
-      <circle cx="16" cy="16" r="10" fill="#000" opacity="0.2" filter="blur(4px)"/>
-      
+      <circle cx="${r}" cy="${r}" r="${r - 4}" fill="rgba(0,0,0,0.2)" />
       <!-- Основной круг -->
-      <circle cx="16" cy="16" r="10" fill="${isHovered ? '#f59e0b' : '#d4af37'}"/>
-      <circle cx="16" cy="16" r="10" fill="none" stroke="white" stroke-width="3"/>
-      
+      <circle cx="${r}" cy="${r}" r="${r - 4}" fill="${isHighlighted ? '#f59e0b' : '#d4af37'}" />
+      <!-- Обводка -->
+      <circle cx="${r}" cy="${r}" r="${r - 4}" fill="none" stroke="white" stroke-width="2" />
       <!-- Блик -->
-      <circle cx="12" cy="12" r="4" fill="white" opacity="0.4"/>
-      
-      <!-- Пульсация при ховере -->
-      ${pulse}
+      <circle cx="${r - 6}" cy="${r - 6}" r="4" fill="white" opacity="0.5" />
+      ${
+        isHighlighted
+          ? `
+      <!-- Анимированная пульсация -->
+      <circle cx="${r}" cy="${r}" r="${r + 2}" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.6">
+        <animate attributeName="r" values="${r + 2};${r + 12};${r + 2}" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite" />
+      </circle>`
+          : ''
+      }
     </svg>
   `;
 
   return L.divIcon({
     html: svg,
-    className: 'custom-gold-marker',  
+    className: '', // критически важно: иначе Leaflet добавит свой CSS
     iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2], 
-    popupAnchor: [0, -size / 2],
+    iconAnchor: [r, r],
+    popupAnchor: [0, -r],
   });
 };
 
-const StoreMap = ({ stores, hoveredId }) => {
-  const center = stores.length ? [stores[0].lat, stores[0].lng] : [55.751244, 37.618423];
+// Основной компонент
+const StoreMap = ({ stores = [], hoveredId = null }) => {
+  // Фильтруем только валидные магазины с координатами
+  const validStores = (stores || []).filter(store => {
+    const lat = parseFloat(store.latitude);
+    const lng = parseFloat(store.longitude);
+    return !isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0;
+  });
+
+  // Центр карты: первый магазин или Москва
+  const defaultCenter = [55.751244, 37.618423];
+  const center = validStores.length
+    ? [parseFloat(validStores[0].latitude), parseFloat(validStores[0].longitude)]
+    : defaultCenter;
 
   return (
     <MapContainer
       center={center}
-      zoom={13.2}
-      zoomControl={false}
-      scrollWheelZoom={false}
-      dragging={false}
+      zoom={13}
+      minZoom={10}
+      maxZoom={18}
+      scrollWheelZoom={true}
+      dragging={true}
+      zoomControl={true}
       style={{ height: '100%', width: '100%', background: '#f8f8f8' }}
     >
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        attribution='&copy; OpenStreetMap &copy; CartoDB'
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | &copy; <a href="https://carto.com/attributions">CARTO</a>'
       />
 
-      {stores.map((store) => (
+      {validStores.map((store) => (
         <Marker
           key={store.id}
-          position={[store.lat, store.lng]}
-          icon={createGoldMarker(hoveredId === store.id)}
+          position={[parseFloat(store.latitude), parseFloat(store.longitude)]}
+          icon={createGoldMarkerIcon(hoveredId === store.id)}
         />
       ))}
-
-      
-      <style jsx global>{`
-        .custom-gold-marker {
-          background: transparent !important;
-          border: none !important;
-          padding: 0 !important;
-          margin: 0 !important;
-        }
-        .custom-gold-marker img {
-          width: 100% !important;
-          height: 100% !important;
-          margin: 0 !important;
-          padding: 0 !important;
-        }
-      `}</style>
     </MapContainer>
   );
 };
