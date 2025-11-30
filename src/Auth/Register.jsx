@@ -61,7 +61,7 @@ export default function Register() {
           type="text"
           placeholder="Имя"
           required
-          className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+          className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black-500"
           onChange={handleChange}
           value={formData.name}
         />
@@ -70,7 +70,7 @@ export default function Register() {
           type="email"
           placeholder="Email"
           required
-          className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+          className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black-500"
           onChange={handleChange}
           value={formData.email}
         />
@@ -79,18 +79,18 @@ export default function Register() {
           type="password"
           placeholder="Пароль"
           required
-          className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+          className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black-500"
           onChange={handleChange}
           value={formData.password}
         />
 
         <button
           type="submit"
-          className="bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition mt-4 font-medium"
+          className="bg-black text-white py-3 rounded-lg hover:bg-black-700 transition mt-4 font-medium"
         >
           Зарегистрироваться
         </button>
       </form>
-    </div>
+    </div>  
   );
 }

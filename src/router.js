@@ -7,6 +7,7 @@ import Login from "./Auth/Login";
 import Register from "./Auth/Register";
 import ProductList from "./Compnents/ProductList";
 import Error from "./Compnents/Error";
+import UserProfile from "./Compnents/UserProfile";
 
 
 export const router = createBrowserRouter([
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
             {
                 path:"/register",
                 Component: Register
+            },
+            {
+                path:'/profile',
+                Component:UserProfile
             }
         ]
 

@@ -55,7 +55,7 @@ export default function Login() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full px-4 py-3 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-3 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-black"
         />
 
         <input
@@ -64,20 +64,20 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="w-full px-4 py-3 border rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-3 border rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-black"
         />
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium disabled:opacity-70"
+          className="w-full py-3 bg-black text-white rounded-lg  transition font-medium disabled:opacity-70"
         >
           {loading ? 'Входим...' : 'Войти'}
         </button>
 
         <p className="text-center mt-6 text-gray-600">
           Нет аккаунта?{' '}
-          <NavLink to="/register" className="text-blue-600 hover:underline font-medium">
+          <NavLink to="/register" className="text-black hover:underline font-medium">
             Зарегистрироваться
           </NavLink>
         </p>

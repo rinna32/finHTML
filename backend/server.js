@@ -6,6 +6,8 @@ const path = require('path');
 // Подключаем базу
 const Database = require('./database');
 
+const db = new Database();
+console.log('🔍 Путь к используемой базе данных:', require('path').resolve(db.dbPath));
 // Инициализация Express и порта
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,10 +16,13 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/images', express.static(path.join(__dirname, 'images')));
+// app.use('/images', express.static(path.join(__dirname, 'images')));
 
-// Инициализация базы данных
-const db = new Database();
+const imagesPath = 'C:/Users/Татьяна Пудова/Desktop/Final_html/finHTML/images';
+
+app.use('/images', express.static(imagesPath));
+
+
 
 // Middleware для обработки ошибок базы данных
 app.use((req, res, next) => {

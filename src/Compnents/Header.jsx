@@ -40,9 +40,8 @@ export default function Header() {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`flex h-16 items-center justify-between px-6 transition-all duration-300 ${
-          isHovered ? 'bg-black/20 backdrop-blur-sm' : 'bg-transparent'
-        }`}
+        className={`flex h-16 items-center justify-between px-6 transition-all duration-300 ${isHovered ? 'bg-black/20 backdrop-blur-sm' : 'bg-transparent'
+          }`}
       >
         <NavLink
           to="/"
@@ -89,8 +88,11 @@ export default function Header() {
                 to="/profile"
                 className="flex items-center gap-2 text-gray-900 hover:text-white transition font-medium"
               >
-                <UserOutlined className="text-xl" />
-                <span className="hidden md:inline">Профиль</span>
+                <NavLink
+                  to="/profile">
+                  <UserOutlined className="text-xl" />
+                  <span className="hidden md:inline">Профиль</span>
+                </NavLink>
               </NavLink>
 
               <span className="text-white/40">|</span>
