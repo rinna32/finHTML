@@ -8,6 +8,8 @@ import Register from "./Auth/Register";
 import ProductList from "./Compnents/ProductList";
 import Error from "./Compnents/Error";
 import UserProfile from "./Compnents/UserProfile";
+import ProductItem from "./Compnents/ProductItem";
+import OutfitsPage from "./Outfits/Outfits";
 
 
 export const router = createBrowserRouter([
@@ -23,15 +25,29 @@ export const router = createBrowserRouter([
                 Component: HistoryPage
             },
             {
-                path:'catalog',
-                Component:ProductList
+                path: 'catalog',
+                Component: ProductList
             },
             {
-                path:'*',
-                Component:Error
-            }
+                path: '/profile',
+                Component: UserProfile
+            },
+            {
+                path:'product/:id',
+                Component: ProductItem
+            },
+            {
+                path:'outfits',
+                Component:OutfitsPage
+
+            },
+            {
+                path: '*',
+                Component: Error
+            },
 
 
+ 
         ]
 
     },
@@ -45,13 +61,10 @@ export const router = createBrowserRouter([
 
             },
             {
-                path:"/register",
+                path: "/register",
                 Component: Register
             },
-            {
-                path:'/profile',
-                Component:UserProfile
-            }
+
         ]
 
     }

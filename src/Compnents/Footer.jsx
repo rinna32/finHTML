@@ -27,10 +27,6 @@ const Footer = () => {
     fetchShops();
   }, []);
 
-  // // Пока грузится — можно показать заглушку или скрыть карту
-  // if (loading && stores.length === 0) {
-  //   return 
-  // }
 
   return (
     <footer className="w-full bg-black text-white">

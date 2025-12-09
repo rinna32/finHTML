@@ -31,8 +31,9 @@ export default function Register() {
 
 
       if (res.success) {
-        localStorage.setItem('token', res.token); 
-        window.dispatchEvent(new Event('authChange')); 
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('user', JSON.stringify(res.data))
+        window.dispatchEvent(new Event('authChange'));
         navigate('/');
       }
       else {
@@ -91,6 +92,6 @@ export default function Register() {
           Зарегистрироваться
         </button>
       </form>
-    </div>  
+    </div>
   );
 }

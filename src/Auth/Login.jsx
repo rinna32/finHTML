@@ -25,7 +25,10 @@ export default function Login() {
       if (!response.ok) throw new Error(data.message || 'Ошибка входа');
 
       localStorage.setItem('token', data.token || 'some-jwt-token');
-      localStorage.setItem('user', JSON.stringify(data));
+
+      localStorage.setItem('user', JSON.stringify(data.data))
+
+      window.dispatchEvent(new Event('authChange'))
       navigate('/', { replace: true });
     } catch (err) {
       setError(err.message || 'Не удалось войти');
@@ -44,18 +47,18 @@ export default function Login() {
       />
       <div className="relative min-h-screen flex items-center justify-center px-6">
 
-        
+
         <div className="w-full max-w-md bg-white/20 rounded-3xl shadow-2xl py-16 px-10">
 
-          
+
           <div className="text-center mb-14">
             <h1 className="text-4xl font-light text-gray-800 tracking-wide">NEOGOTH</h1>
           </div>
 
-          
+
           <form onSubmit={handleSubmit} className="space-y-6">
 
-            
+
             <input
               type="email"
               value={email}
@@ -64,7 +67,7 @@ export default function Login() {
               className="w-full px-6 py-5 bg-blue-50 rounded-2xl text-gray-700 placeholder-gray-500 focus:outline-none focus:bg-blue-100 transition-all duration-200"
             />
 
-            
+
             <input
               type="password"
               value={password}
@@ -73,7 +76,7 @@ export default function Login() {
               className="w-full px-6 py-5 bg-blue-50 rounded-2xl text-gray-700 placeholder-gray-500 focus:outline-none focus:bg-blue-100 transition-all duration-200"
             />
 
-            
+
             <button
               type="submit"
               disabled={loading}
@@ -83,7 +86,7 @@ export default function Login() {
             </button>
           </form>
 
-          
+
           <div className="mt-12 text-center">
             <p className="text-black text-2xl ">
               Ещё нет аккаунта?{' '}
